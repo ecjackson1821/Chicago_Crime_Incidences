@@ -15,19 +15,19 @@ Pulls down data from a google survey which ECCSC uses to log first response acti
 into a map of Chicago using Dash. ECCSC can visually assess their first response activity for internal operations and to demonstrate their value proposition to prospective funders.
 
 ## Modularized into Four Components
-### 1. Refresh Data
+### 1. Chicago Police Data
 * Chicago data API pull
 * Visualization of ECCSC data using Dash
 * Command line interaction to select which component of  project to run
-### 2. Citizen scrape
+### 2. Web Scraper for Citizen Data
 * Built automated daily citizen pull (on local machine) 
 * Storage system for preserving csv files aggregating by month 
 of crime incident and key search terms 
-### 3. Refresh Data
+### 3. ECCSC Crime Prevention Activity
 * Pull down google sheet ECCSC data
 * Find latitude and longitudes based on inputted survey data
 * Record link algorithm
-### 4. Data Store
+### 4. Transform and Analysis
 * SQL database connection for each data source
 * Clean incoming data and data types
 * Record link algorithm

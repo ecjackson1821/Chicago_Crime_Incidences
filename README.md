@@ -1,35 +1,55 @@
-To run this project:
+## Police Data Accountability
 
-cd to directory ez (from proj-ez inside environmnet after installing requirements)
-in command line run python3 main.py. This will call our record_link.py file and our server.py which are the two main components of our analysis. The record link compares data between citizen and chicago crime data portal, and the server creates visual of the 'mock' incidents that ECCSC responded to.
-To test our Chicago Data Portal API and Citizen web scraper you can navigate to the refresh_data module and run the python3 police_api.py, as well as python3 citizen_pull.py. This data is store in our proj_ez sqlite3 database, where our record_link.py and server.py files pull their data from.
+This project has two components and serves as a proof of concept for ECCSC – a Chicago non-profit offering first responders as an alternative to the police. 
 
-Key User Notes:
+Most violence intervention groups primarily utilize Chicago Police data; however, ECCSC would like to use Citizen data to evaluate the accuracy of the Chicago Police Data, and consider using both data sources to compare their own first responder activity against. Their primary concern is that the Chicago Police data may not always categorize incident type correctly.
 
-If the map server is in use updating the last line in the servery.py file located in the map directory to app.run_server(port=1234) will fix this.
+## 1. Record Link: 
+Project EZ runs an analysis on two primary sources used to track crime incident data for Chicago. We apply a record linking algorithm to match crime data extracted
+from the Chicago Data Portal’s API to reported incidences of crime pulled from crowdsourced application Citizen. We match incidences based on geo coordinates, date, and time. This enables ECCSC to evaluate Citizen reports of crime compared with Chicago’s Police response to crime and assess any severity differences in reporting.
 
-Additionally if geoloc times out, update locator variable with new email address. Within code go to get_lat_long function in refresh_data/sql_query and insert new email address.
+## 2. First Response Activity: 
+Pulls down data from a google survey which ECCSC uses to log first response activity. Cleans data and generates latitude and longitude coordinates to map
+into a map of Chicago using Dash. ECCSC can visually assess their first response activity for internal operations and to demonstrate their value proposition to prospective funders.
 
-These are the files contained in Ez package:
+## Project Structure
 
-ez: - match_file.csv: putput of matches found between citizen and chicago data (output of record_link.py) - README.md: this file - requirements.txt: modules needed to import - app.py: - projection_interaction.bat: file to interact with app from command line
+###1. Refresh Data
+• Chicago data API pull
+• Visualization of ECCSC data using Dash
+• Command line interaction to select which component of  project to run
+###2. Citizen scrape
+• Built automated daily citizen pull (on local machine) 
+• Storage system for preserving csv files aggregating by month 
+of crime incident and key search terms 
+###3. Refresh Data
+• Pull down google sheet ECCSC data
+• Find latitude and longitudes based on inputted survey data
+• Record link algorithm
+###4. Data Store
+• SQL database connection for each data source
+• Clean incoming data and data types
+• Record link algorithm
 
--refresh_data
-    - citizen_pull.py: scrapes Citizen App for incident data and stores in sqlite database as well as backup csv files in data folder
-    - proj_ez.sqlite3
-    - refresh_citizen.bat: used in conjunction with task mananger to automate citizen pull to run daily  
-    - util.py: helper functions for wokring with sql and csv
-    - google_sheet.py: connects to ECCSC survey data and pulls to csv
-    - police_api.py: Pulls Chicago crime data through an API and stores in sqlite database 
-    - sql_query.py: connects to sql database to and creates pandas dataframes from data
+## Interact with EZ Project
+To run our project from command line:
+cd ~/proj-ez
+sh install.sh 
+(if local machine requires different command line arguments for virtual environment, then enter 
+following commands to run program)
+cd ez
+bash project-requirements
 
--link_records
-    - record_link.py: finds matches between Chicago crime data and Citizen App data and identifies matches based on time and distance
-    outputs to match_file.csv in ez 
+## Expected output:
+Interaction:
+• Asks for user input, if they would like to run record link analysis, map data, or exit program
+• Once user inputs, echos user choice and runs corresponding command
+• If still in script after command is run, reminds user of possible inputs
+From Link Records Analysis:
+• Prints the start and end dates captured by Chicago Crime data and Citizen. Prints number
+of days captured between the two datasets which overlap and can generate a match
+• Writes all matches to a csv file called “match_file.csv”
+From ECCSC Map visualization:
+• Displays map of first response activity from ECCSC data generated from google forms
+survey. Click cursor on marker to display detail of crime type.
 
--map
-    server.py: generates map of ECCSC incidents addressed
-
--data
-    -data 
-        - contains historical data in csv files
